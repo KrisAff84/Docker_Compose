@@ -1,0 +1,27 @@
+# The mariadb portion of this file isn't quite working as expected. Try to find a solution later on
+
+services:
+  drupal:
+    image: custom-drupal
+    build: .
+    ports:
+      - '8080:80'
+    volumes:
+      - drupal-modules:/var/www/html/modules
+      - drupal-profiles:/var/www/html/profiles
+      - drupal-sites:/var/www/html/sites
+      - drupal-themes:/var/www/html/themes
+
+  mariadb: 
+    image: mariadb:latest
+    environment:
+      - MARIADB_DATABASE=drupal
+      - MARIADB_USER=kris
+      - MARIADB_PASSWORD=password
+      - MARIADB_ROOT_PASSWORD=rootpassword
+
+volumes:
+  drupal-modules:
+  drupal-profiles:
+  drupal-sites:
+  drupal-themes:
