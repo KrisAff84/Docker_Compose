@@ -1,0 +1,45 @@
+
+services:
+  web_server:
+    image: nginx:1.24-alpine
+    ports: 
+      - "80"
+    networks:
+      - frontend
+    deploy:
+      replicas: 3
+      restart_policy:
+        condition: on-failure
+
+  redis:
+    image: redis.7-alpine
+    ports:
+      - "6379"
+    networks:
+      - frontend
+    deploy:
+      replicas: 3
+      restart_policy:
+        condition: on-failure
+
+  database:
+    image: mariadb:10-jammy
+    networks:
+      - backend
+    volumes:
+      - db-volume:/var/lib/mysql
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+
+    environment:
+      - MARIADB_USER=kris
+      - MARIADB_PASSWORD=mypassword
+      - MARIADB_ROOT_PASSWORD=rootpassword
+
+networks:
+  frontend:
+  backend:
+
+volumes:
+  db-volume:
