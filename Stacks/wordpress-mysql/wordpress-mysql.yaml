@@ -1,0 +1,39 @@
+# Deploys a wordpress stack using mysql as backend
+
+services:
+  wordpress:
+    image: wordpress:latest 
+    ports:
+      - "80:80"
+    networks:
+      - frontend
+    deploy: 
+      replicas: 3
+      restart_policy:
+        condition: on-failure
+  
+  mysql:
+    image: mysql:latest
+    ports:
+      - "3306:3306"
+    volumes:
+      - db-volume:/var/lib/mysql 
+    environment:
+      - MYSQL_ROOT_PASSWORD=rootpassword 
+      - MYSQL_USER=kris
+      - MYSQL_PASSWORD=password 
+    networks:
+      - backend
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+      restart_policy:
+        condition: on-failure
+
+  volumes:
+    db-volume:
+  
+  networks:
+    frontend:
+    backend:
+      
