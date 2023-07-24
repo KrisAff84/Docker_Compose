@@ -2,7 +2,7 @@
 
 services:
   wordpress:
-    image: wordpress:latest 
+    image: wordpress:6.2 
     ports:
       - "80:80"
     networks:
@@ -11,19 +11,20 @@ services:
       replicas: 3
       restart_policy:
         condition: on-failure
-  
+
   mysql:
-    image: mysql:latest
-    ports:
-      - "3306:3306"
+    image: mysql:8.0-debian
     volumes:
-      - db-volume:/var/lib/mysql 
+      - dbdata:/var/lib/mysql
     environment:
       - MYSQL_ROOT_PASSWORD=rootpassword 
       - MYSQL_USER=kris
-      - MYSQL_PASSWORD=password 
+      - MYSQL_PASSWORD=password
+      - MYSQL_DATABASE=wordpress
     networks:
       - backend
+    ports:
+      - "3306:3306"
     deploy:
       placement:
         constraints: [node.role == manager]
@@ -31,7 +32,7 @@ services:
         condition: on-failure
 
 volumes:
-  db-volume:
+  dbdata:
   
 networks:
   frontend:
