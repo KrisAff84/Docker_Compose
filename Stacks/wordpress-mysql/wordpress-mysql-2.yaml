@@ -19,7 +19,7 @@ services:
       - dbdata:/var/lib/mysql
     environment:
       - MYSQL_ROOT_PASSWORD=rootpassword 
-      - MYSQL_USER=user
+      - MYSQL_USER=kris
       - MYSQL_PASSWORD=password
       - MYSQL_DATABASE=wordpressdb
     networks:
@@ -39,9 +39,8 @@ networks:
   frontend:
   backend:
       
+
     # environment:
-    #   - WORDPRESS_DB_HOST=18.144.176.139:3306
+    #   - WORDPRESS_DB_HOST=
     #   - WORDPRESS_DB_USER=kris
     #   - WORDPRESS_DB_PASSWORD=password
-    # depends_on:
-    #   - mysql
